@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "loggle"
+version = "0.1.0"
+description = ""
+authors = ["Kieran Lock <kieran.lock@outlook.com>"]
+readme = "README.md"
+package-mode = true
+
+[tool.poetry.dependencies]
+python = "^3.13"
+pydantic = "^2.9.2"
+dill = "^0.3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
