@@ -1,0 +1,14 @@
+{
+    "loggers": {
+        "my-library": {
+            "handlers": ["queue"],
+            "level": "INFO",
+            "propagate": false
+        },
+        "my-application": {
+            "handlers": ["queue"],
+            "level": "INFO",
+            "propagate": false
+        }
+    }
+}

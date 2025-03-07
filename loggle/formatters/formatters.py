@@ -5,7 +5,7 @@ from .json_formatter import JSONFormatter
 from .standard_formatter import StandardFormatter
 
 
-FORMATTERS = {
+LOGGLE_FORMATTERS = {
     FormatterName.STANDARD: FormatterSchema(
         formatter_factory=FormatterFactory(lambda: StandardFormatter()),
     ),

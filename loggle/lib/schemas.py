@@ -5,12 +5,9 @@ from logging.config import dictConfig as dict_config
 from pydantic import BaseModel
 
 from ..handlers import QueueHandler
-from ..formatters.lib.schemas import FormatterSchema
-from ..formatters.lib.consts import FormatterName
-from ..handlers.lib.types import HandlerName, HandlerSchema
-from ..handlers.lib.consts import QueueHandlerName
-from ..loggers.lib.consts import LoggerName
-from ..loggers.lib.schemas import LoggerSchema
+from ..formatters import FormatterSchema, FormatterName, LOGGLE_FORMATTERS
+from ..handlers import HandlerName, HandlerSchema, QueueHandlerName, LOGGLE_HANDLERS
+from ..loggers import LoggerName, LoggerSchema, LoggersSchema
 
 
 class LoggingConfiguration(BaseModel):
@@ -29,17 +26,25 @@ class LoggingConfiguration(BaseModel):
         return self.model_dump(exclude_none=True, by_alias=True)
 
     @classmethod
-    def default(
+    def create(
         cls,
         *,
         formatters: dict[FormatterName, FormatterSchema],
         handlers: dict[HandlerName, HandlerSchema],
-        loggers: dict[LoggerName, LoggerSchema],
+        loggers: LoggersSchema | dict[LoggerName, LoggerSchema],
     ) -> Self:
         return cls(
             version=1,
             disable_existing_loggers=True,
             formatters=formatters,
             handlers=handlers,
+            loggers=loggers.to_loggers_dictionary() if isinstance(loggers, LoggersSchema) else loggers,
+        )
+    
+    @classmethod
+    def default(cls, *, loggers: LoggersSchema | dict[LoggerName, LoggerSchema]) -> Self:
+        return cls.create(
+            formatters=LOGGLE_FORMATTERS,
+            handlers=LOGGLE_HANDLERS,
             loggers=loggers,
         )

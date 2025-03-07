@@ -11,7 +11,8 @@ from .json_file_handler import JSONFileHandler
 
 QueueHandler.automatically_set_listener()
 
-HANDLERS = {
+
+LOGGLE_HANDLERS = {
     StreamHandlerName.STANDARD: StreamHandlerSchema(
         formatter=FormatterName.STANDARD,
         handler_class=StreamHandler,

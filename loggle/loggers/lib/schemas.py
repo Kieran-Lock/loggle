@@ -28,5 +28,5 @@ class LoggersSchema(LoggerModel):
         return {logger_name: logger_schema.model_dump(exclude_none=True) for logger_name, logger_schema in self.loggers.items()}
 
     @classmethod
-    def from_path(cls, path: Path) -> Self:
+    def from_json(cls, path: Path) -> Self:
         return cls.model_validate(loads(path.read_text()), from_attributes=False)
