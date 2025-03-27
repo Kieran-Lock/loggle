@@ -11,14 +11,19 @@ class LoggingStream(StrEnum):
     STANDARD_ERROR = "ext://sys.stderr"
 
 
-class StreamHandlerName(StrEnum):
+class BasePrimaryHandlerName(StrEnum):
+    pass
+
+
+class PrimaryHandlerName(BasePrimaryHandlerName):
     STANDARD = "standard"
     ERROR = "error"
-
-
-class FileHandlerName(StrEnum):
     JSON_FILE = "json_file"
 
 
-class QueueHandlerName(StrEnum):
+class BaseSecondaryHandlerName(StrEnum):
+    pass
+
+
+class SecondaryHandlerName(BaseSecondaryHandlerName):
     QUEUE = "queue"

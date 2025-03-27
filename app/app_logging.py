@@ -1,12 +1,12 @@
 from pathlib import Path
 
-from loggle import LoggingConfiguration, Logger, LoggersSchema, LoggerName
+from loggle import LoggingConfiguration, Logger, LoggersSchema, BaseLoggerName, FormatterName, HandlerName, PHandler, SHandler
 
 
-class AppLoggerName(LoggerName):
+class LoggerName(BaseLoggerName):
     MY_LIBRARY = "my-library"
     MY_APPLICATION = "my-application"
 
 
-LOGGING_CONFIGURATION = LoggingConfiguration.default(loggers=LoggersSchema.from_json(Path("./loggers.json")))
-LOGGER = Logger(name=AppLoggerName.MY_APPLICATION)
+LOGGING_CONFIGURATION = LoggingConfiguration[FormatterName, HandlerName, PHandler, SHandler, LoggerName].default(loggers=LoggersSchema[LoggerName, HandlerName].from_json(Path("./loggers.json")))
+LOGGER = Logger(name=LoggerName.MY_APPLICATION)

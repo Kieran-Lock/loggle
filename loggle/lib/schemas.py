@@ -5,21 +5,23 @@ from logging.config import dictConfig as dict_config
 from pydantic import BaseModel
 
 from ..handlers import QueueHandler
-from ..formatters import FormatterSchema, FormatterName, LOGGLE_FORMATTERS
-from ..handlers import HandlerName, HandlerSchema, QueueHandlerName, LOGGLE_HANDLERS
-from ..loggers import LoggerName, LoggerSchema, LoggersSchema
+from ..formatters import FormatterSchema, BaseFormatterName, LOGGLE_FORMATTERS
+from ..handlers import HandlerName, SecondaryHandlerName, BaseHandlerName, LOGGLE_HANDLERS, HandlersDict, HandlerModel
+from ..loggers import BaseLoggerName, LoggerSchema, LoggersSchema
 
 
-class LoggingConfiguration(BaseModel):
+class LoggingConfiguration[T_FormatterName: BaseFormatterName, T_HandlerName: BaseHandlerName, T_PHandler: HandlerModel, T_SHandler: HandlerModel, T_LName: BaseLoggerName](BaseModel):
     version: Literal[1]
     disable_existing_loggers: bool
-    formatters: dict[FormatterName, FormatterSchema]
-    handlers: dict[HandlerName, HandlerSchema]
-    loggers: dict[LoggerName, LoggerSchema]
+    formatters: dict[T_FormatterName, FormatterSchema]
+    handlers: HandlersDict[T_HandlerName, T_PHandler, T_SHandler]
+    loggers: dict[T_LName, LoggerSchema[T_HandlerName]]
 
     def set_configuration(self) -> None:
+        from pprint import pprint
+        pprint(self.to_configuration_dictionary())
         dict_config(self.to_configuration_dictionary())
-        if QueueHandlerName.QUEUE in self.handlers:
+        if SecondaryHandlerName.QUEUE in self.handlers:
             QueueHandler.get().start_listener()
     
     def to_configuration_dictionary(self) -> dict[str, Any]:
@@ -29,9 +31,9 @@ class LoggingConfiguration(BaseModel):
     def create(
         cls,
         *,
-        formatters: dict[FormatterName, FormatterSchema],
-        handlers: dict[HandlerName, HandlerSchema],
-        loggers: LoggersSchema | dict[LoggerName, LoggerSchema],
+        formatters: dict[T_FormatterName, FormatterSchema],
+        handlers: HandlersDict[T_HandlerName, T_PHandler, T_SHandler],
+        loggers: LoggersSchema[T_LName, T_HandlerName] | dict[T_LName, LoggerSchema[T_HandlerName]],
     ) -> Self:
         return cls(
             version=1,
@@ -42,7 +44,7 @@ class LoggingConfiguration(BaseModel):
         )
     
     @classmethod
-    def default(cls, *, loggers: LoggersSchema | dict[LoggerName, LoggerSchema]) -> Self:
+    def default(cls, *, loggers: LoggersSchema[T_LName, T_HandlerName] | dict[T_LName, LoggerSchema[T_HandlerName]]) -> Self:
         return cls.create(
             formatters=LOGGLE_FORMATTERS,
             handlers=LOGGLE_HANDLERS,

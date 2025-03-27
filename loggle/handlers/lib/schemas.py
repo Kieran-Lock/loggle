@@ -7,8 +7,8 @@ from typing import Literal
 from pydantic import ConfigDict, Field, field_serializer, field_validator, ValidationError, BaseModel, computed_field
 from pydantic.alias_generators import to_camel
 
-from ...formatters.lib.consts import FormatterName
-from .consts import StreamHandlerName, FileHandlerName, LoggingStream
+from ...formatters.lib.consts import BaseFormatterName
+from .consts import BasePrimaryHandlerName, BasePrimaryHandlerName, LoggingStream
 from ...lib.consts import LoggingLevel
 
 
@@ -46,14 +46,14 @@ class HandlerModel(BaseModel):
     )
 
 
-class StreamHandlerSchema(HandlerModel):
-    formatter: FormatterName
+class StreamHandlerSchema[T: BaseFormatterName](HandlerModel):
+    formatter: T
     level: LoggingLevel
     stream: LoggingStream
 
 
-class FileHandlerSchema(HandlerModel):
-    formatter: FormatterName
+class FileHandlerSchema[T: BaseFormatterName](HandlerModel):
+    formatter: T
     level: LoggingLevel
     file_name: Path | None = Field(alias="filename", serialization_alias="filename", default=None)
     max_bytes: int
@@ -66,8 +66,8 @@ class FileHandlerSchema(HandlerModel):
     )
 
 
-class QueueHandlerSchema(HandlerModel):
-    handlers: list[StreamHandlerName | FileHandlerName]
+class QueueHandlerSchema[T: BasePrimaryHandlerName](HandlerModel):
+    handlers: list[T]
     respect_handler_level: bool
 
     @computed_field

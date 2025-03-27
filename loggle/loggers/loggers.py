@@ -1,28 +1,28 @@
 from .lib.schemas import LoggersSchema, LoggerSchema
-from ..handlers.lib.types import QueueHandlerName
+from ..handlers import SecondaryHandlerName
 from ..lib.consts import LoggingLevel
-from .lib.consts import DefaultLoggerName
+from .lib.consts import LoggerName
 
 
 UVICORN_LOGGERS = LoggersSchema(
     loggers={
-        DefaultLoggerName.UVICORN: LoggerSchema(
-            handlers=[QueueHandlerName.QUEUE],
+        LoggerName.UVICORN: LoggerSchema(
+            handlers=[SecondaryHandlerName.QUEUE],
             level=LoggingLevel.INFO,
             propagate=False,
         ),
-        DefaultLoggerName.UVICORN_ACCESS: LoggerSchema(
-            handlers=[QueueHandlerName.QUEUE],
+        LoggerName.UVICORN_ACCESS: LoggerSchema(
+            handlers=[SecondaryHandlerName.QUEUE],
             level=LoggingLevel.INFO,
             propagate=False,
         ),
-        DefaultLoggerName.UVICORN_ERROR: LoggerSchema(
-            handlers=[QueueHandlerName.QUEUE],
+        LoggerName.UVICORN_ERROR: LoggerSchema(
+            handlers=[SecondaryHandlerName.QUEUE],
             level=LoggingLevel.INFO,
             propagate=False,
         ),
-        DefaultLoggerName.UVICORN_ASGI: LoggerSchema(
-            handlers=[QueueHandlerName.QUEUE],
+        LoggerName.UVICORN_ASGI: LoggerSchema(
+            handlers=[SecondaryHandlerName.QUEUE],
             level=LoggingLevel.INFO,
             propagate=False,
         ),

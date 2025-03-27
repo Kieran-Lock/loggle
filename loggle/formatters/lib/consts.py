@@ -1,6 +1,10 @@
 from enum import StrEnum
 
 
-class FormatterName(StrEnum):
+class BaseFormatterName(StrEnum):
+    pass
+
+
+class FormatterName(BaseFormatterName):
     STANDARD = "standard"
     JSON = "json"

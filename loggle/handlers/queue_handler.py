@@ -5,13 +5,13 @@ from typing import Self, ClassVar, Literal
 from multiprocessing import Queue
 from dataclasses import dataclass
 
-from .lib.consts import QueueHandlerName
+from .lib.consts import SecondaryHandlerName
 
 
 @dataclass(slots=True, init=False)
 class QueueHandler(DefaultQueueHandler):
     AUTOMATICALLY_SET_LISTENER: ClassVar[bool] = False
-    NAME: ClassVar[Literal[QueueHandlerName.QUEUE]] = QueueHandlerName.QUEUE
+    NAME: ClassVar[Literal[SecondaryHandlerName.QUEUE]] = SecondaryHandlerName.QUEUE
 
     queue: Queue
     _listener: QueueListener | None

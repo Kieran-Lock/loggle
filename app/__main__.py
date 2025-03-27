@@ -2,7 +2,7 @@ from time import sleep
 
 from lib import some_lib_func
 
-from .app_logging import LOGGER, LOGGING_CONFIGURATION
+from app_logging import LOGGER, LOGGING_CONFIGURATION
 
 
 def run_app(display: str) -> None:

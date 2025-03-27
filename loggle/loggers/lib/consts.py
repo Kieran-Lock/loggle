@@ -1,11 +1,11 @@
 from enum import StrEnum
 
 
-class LoggerName(StrEnum):
+class BaseLoggerName(StrEnum):
     pass
 
 
-class DefaultLoggerName(LoggerName):
+class LoggerName(BaseLoggerName):
     UVICORN = "uvicorn"
     UVICORN_ACCESS = "uvicorn.access"
     UVICORN_ERROR = "uvicorn.error"

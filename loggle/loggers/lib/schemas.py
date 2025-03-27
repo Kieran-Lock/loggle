@@ -3,8 +3,8 @@ from typing import Self
 from json import loads
 from pathlib import Path
 
-from ...handlers.lib.types import HandlerName
-from .consts import LoggerName
+from ...handlers.lib.types import BaseHandlerName
+from .consts import BaseLoggerName
 from ...lib.consts import LoggingLevel
 
 
@@ -15,16 +15,16 @@ class LoggerModel(BaseModel):
     )
 
 
-class LoggerSchema(LoggerModel):
-    handlers: list[HandlerName]
+class LoggerSchema[T: BaseHandlerName](LoggerModel):
+    handlers: list[T]
     level: LoggingLevel
     propagate: bool
 
 
-class LoggersSchema(LoggerModel):
-    loggers: dict[LoggerName, LoggerSchema]
+class LoggersSchema[T_LName: BaseLoggerName, T_HName: BaseHandlerName](LoggerModel):
+    loggers: dict[T_LName, LoggerSchema[T_HName]]
 
-    def to_loggers_dictionary(self) -> dict[LoggerName, LoggerSchema]:
+    def to_loggers_dictionary(self) -> dict[T_LName, LoggerSchema[T_HName]]:
         return {logger_name: logger_schema.model_dump(exclude_none=True) for logger_name, logger_schema in self.loggers.items()}
 
     @classmethod
