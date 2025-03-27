@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from logging import Logger as DefaultLogger, getLogger as get_logger, _levelToName
+from logging import Logger as DefaultLogger, getLogger as get_logger, _levelToName as level_to_name
 from dataclasses import dataclass, field
 from typing import Self
 
@@ -23,7 +23,7 @@ class Logger:
     
     @property
     def level(self) -> LoggingLevel:
-        return LoggingLevel(_levelToName[self._logger.level])
+        return LoggingLevel(level_to_name[self._logger.level])
 
     def set_level(self, level: LoggingLevel) -> Self:
         self._logger.setLevel(level)

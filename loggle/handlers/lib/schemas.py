@@ -10,10 +10,13 @@ from pydantic.alias_generators import to_camel
 from ...formatters.lib.consts import BaseFormatterName
 from .consts import BasePrimaryHandlerName, BasePrimaryHandlerName, LoggingStream
 from ...lib.consts import LoggingLevel
+from ...filters import BaseFilterName
 
 
-class HandlerModel(BaseModel):
+class HandlerModel[T: BaseFilterName](BaseModel):
     handler_class: type[Handler] = Field(alias="class", serialization_alias="class")
+    filters: list[T] | None = None
+
 
     @field_serializer("handler_class")
     def serialize_handler(self, handler_class: type[Handler]) -> str:
@@ -46,14 +49,14 @@ class HandlerModel(BaseModel):
     )
 
 
-class StreamHandlerSchema[T: BaseFormatterName](HandlerModel):
-    formatter: T
+class StreamHandlerSchema[T_FilterName: BaseFilterName, T_FormatterName: BaseFormatterName](HandlerModel[T_FilterName]):
+    formatter: T_FormatterName
     level: LoggingLevel
     stream: LoggingStream
 
 
-class FileHandlerSchema[T: BaseFormatterName](HandlerModel):
-    formatter: T
+class FileHandlerSchema[T_FilterName: BaseFilterName, T_FormatterName: BaseFormatterName](HandlerModel[T_FilterName]):
+    formatter: T_FormatterName
     level: LoggingLevel
     file_name: Path | None = Field(alias="filename", serialization_alias="filename", default=None)
     max_bytes: int
@@ -66,9 +69,9 @@ class FileHandlerSchema[T: BaseFormatterName](HandlerModel):
     )
 
 
-class QueueHandlerSchema[T: BasePrimaryHandlerName](HandlerModel):
-    handlers: list[T]
-    respect_handler_level: bool
+class QueueHandlerSchema[T_PHandlerName: BasePrimaryHandlerName, T_FilterName: BaseFormatterName](HandlerModel[T_FilterName]):
+    handlers: list[T_PHandlerName]
+    respect_handler_level: bool = True
 
     @computed_field
     @property

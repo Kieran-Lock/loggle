@@ -8,6 +8,7 @@ from typing import Self
 from pydantic import BaseModel, ConfigDict, field_serializer, Field
 from pydantic.alias_generators import to_camel
 
+from ...filters import BaseFilterName
 from ...lib.consts import LoggingLevel
 from .formatter_factory import FormatterFactory
 
@@ -69,7 +70,7 @@ class LogSchema(JSONLogModel):
         )
 
 
-class FormatterSchema(FormatterModel):
+class FormatterSchema[T: BaseFilterName](FormatterModel):
     format: str | None = None
     datefmt: str | None = None
     formatter_factory: FormatterFactory | None = Field(alias="()", serialization_alias="()", default=None)

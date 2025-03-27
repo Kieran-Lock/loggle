@@ -10,9 +10,11 @@ def run_app(display: str) -> None:
     LOGGER.info("Starting application")
     sleep(1)
     LOGGER.info("Started!")
-    result = some_lib_func()
-    LOGGER.warning(f"Got: {result}")
+    result_one = some_lib_func()
+    LOGGER.warning(f"Got: {result_one}")
     print(display)
+    result_two = some_lib_func(n=6)
+    LOGGER.warning(f"Got: {result_two}")
     LOGGER.info(f"Displayed: {display=}", display=display)
     LOGGER.info("Terminating...")
 

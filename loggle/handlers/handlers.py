@@ -8,6 +8,7 @@ from ..formatters.lib.consts import FormatterName
 from ..lib.consts import LoggingLevel
 from .queue_handler import QueueHandler
 from .json_file_handler import JSONFileHandler
+from ..filters import FilterName
 
 
 QueueHandler.automatically_set_listener()
@@ -15,20 +16,21 @@ QueueHandler.automatically_set_listener()
 
 LOGGLE_HANDLERS = HandlersDict[HandlerName, PHandler, SHandler]({
     PrimaryHandlerName.STANDARD: StreamHandlerSchema(
-        formatter=FormatterName.STANDARD,
         handler_class=StreamHandler,
+        filters=[FilterName.ERROR],
+        formatter=FormatterName.STANDARD,
         level=LoggingLevel.DEBUG,
         stream=LoggingStream.STANDARD_OUT,
     ),
     PrimaryHandlerName.ERROR: StreamHandlerSchema(
-        formatter=FormatterName.STANDARD,
         handler_class=StreamHandler,
-        level=LoggingLevel.WARNING,
+        formatter=FormatterName.STANDARD,
+        level=LoggingLevel.ERROR,
         stream=LoggingStream.STANDARD_ERROR,
     ),
     PrimaryHandlerName.JSON_FILE: FileHandlerSchema(
-        formatter=FormatterName.JSON,
         handler_class=JSONFileHandler,
+        formatter=FormatterName.JSON,
         level=LoggingLevel.DEBUG,
         filename=Path(f"./logging/logs/log.{JSONFileHandler.FILE_EXTENSION}"),
         max_bytes=MAXIMUM_LOG_FILE_BYTES,
@@ -41,6 +43,5 @@ LOGGLE_HANDLERS = HandlersDict[HandlerName, PHandler, SHandler]({
             PrimaryHandlerName.ERROR,
             PrimaryHandlerName.JSON_FILE,
         ],
-        respect_handler_level=True,
     ),
 })
