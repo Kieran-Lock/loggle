@@ -18,8 +18,6 @@ class LoggingConfiguration[T_FormatterName: BaseFormatterName, T_HandlerName: Ba
     loggers: dict[T_LName, LoggerSchema[T_HandlerName]]
 
     def set_configuration(self) -> None:
-        from pprint import pprint
-        pprint(self.to_configuration_dictionary())
         dict_config(self.to_configuration_dictionary())
         if SecondaryHandlerName.QUEUE in self.handlers:
             QueueHandler.get().start_listener()

@@ -8,5 +8,9 @@ class LoggerName(BaseLoggerName):
     MY_APPLICATION = "my-application"
 
 
-LOGGING_CONFIGURATION = LoggingConfiguration[FormatterName, HandlerName, PHandler, SHandler, LoggerName].default(loggers=LoggersSchema[LoggerName, HandlerName].from_json(Path("./loggers.json")))
+LOGGING_CONFIGURATION = (
+    LoggingConfiguration[FormatterName, HandlerName, PHandler, SHandler, LoggerName].default(
+        loggers=LoggersSchema[LoggerName, HandlerName].from_json(Path("./logging/loggers.json"))
+    )
+)
 LOGGER = Logger(name=LoggerName.MY_APPLICATION)
