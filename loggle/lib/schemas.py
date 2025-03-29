@@ -20,9 +20,7 @@ class LoggingConfiguration[T_FilterName: BaseFilterName, T_FormatterName: BaseFo
     loggers: dict[T_LName, LoggerSchema[T_HandlerName]]
 
     def set_configuration(self) -> None:
-        dict_config(self.to_configuration_dictionary())
-        if SecondaryHandlerName.QUEUE in self.handlers:
-            QueueHandler.get().start_listener()
+        dict_config(self.to_configuration_dictionary())  # TODO: Investigate how this works!
     
     def to_configuration_dictionary(self) -> dict[str, Any]:
         return self.model_dump(exclude_none=True, by_alias=True)
