@@ -1,8 +1,15 @@
-from enum import StrEnum
+from ..lib.consts import LoggerName
 
 
-class UvicornLoggerName(StrEnum):
-    UVICORN = "uvicorn"
-    UVICORN_ACCESS = "uvicorn.access"
-    UVICORN_ERROR = "uvicorn.error"
-    UVICORN_ASGI = "uvicorn.asgi"
+class UvicornLoggerName(LoggerName):
+    ROOT = "uvicorn"
+    ACCESS = "uvicorn.access"
+    ERROR = "uvicorn.error"
+    ASGI = "uvicorn.asgi"
+
+
+class SQLAlchemyLoggerName(LoggerName):
+    ENGINE = "sqlalchemy.engine"
+    POOL = "sqlalchemy.pool"
+    DIALECTS = "sqlalchemy.dialects"
+    ORM = "sqlalchemy.orm"
