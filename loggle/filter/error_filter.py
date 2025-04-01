@@ -2,7 +2,7 @@ from logging import Filter, LogRecord
 from typing import override
 from dataclasses import dataclass
 
-from ..lib.consts import LoggingLevel
+from ..log.lib.consts import LoggingLevel
 
 
 @dataclass(slots=True)

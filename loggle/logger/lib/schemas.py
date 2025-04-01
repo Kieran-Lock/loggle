@@ -5,7 +5,7 @@ from pathlib import Path
 
 from ...handler.lib.types import HandlerName
 from .consts import LoggerName
-from ...lib.consts import LoggingLevel
+from ...log.lib.consts import LoggingLevel
 
 
 class LoggerModel(BaseModel):

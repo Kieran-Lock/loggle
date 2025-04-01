@@ -1,4 +1,5 @@
 from time import sleep
+from pprint import pprint
 
 from lib import some_lib_func
 
@@ -6,6 +7,7 @@ from .app_logging import LOGGER, LOGGING_CONFIGURATION
 
 
 def run_app(display: str) -> None:
+    pprint(LOGGING_CONFIGURATION.to_configuration_dictionary())
     LOGGING_CONFIGURATION.set_configuration()
     LOGGER.info("Starting application")
     sleep(1)

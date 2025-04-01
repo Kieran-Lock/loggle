@@ -2,20 +2,19 @@ from __future__ import annotations
 
 from pathlib import Path
 from logging import Formatter, Handler
-from typing import Literal
 
-from pydantic import ConfigDict, Field, field_serializer, field_validator, ValidationError, BaseModel, computed_field
+from pydantic import ConfigDict, Field, field_serializer, field_validator, ValidationError, BaseModel
 from pydantic.alias_generators import to_camel
 
 from ...formatter.lib.consts import FormatterName
-from .consts import AtomicHandlerName, LoggingStream
-from ...lib.consts import LoggingLevel
+from .consts import AtomicHandlerName, LoggingStream, DEFAULT_LOG_FILE_BACKUPS, DEFAULT_MAXIMUM_LOG_FILE_BYTES, DEFAULT_LOG_FILE_PATH
+from ...log.lib.consts import LoggingLevel
 from ...filter.lib.consts import FilterName
 from .utils import import_qualified_name
 
 
 class HandlerModel[T: FilterName](BaseModel):
-    handler_class: type[Handler] = Field(alias="class", serialization_alias="class")
+    handler_class: type[Handler] = Field(serialization_alias="class")
     filters: list[T] | None = None
 
     @field_serializer("handler_class")
@@ -47,6 +46,13 @@ class AtomicHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterNa
 
 class CompositeHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](HandlerModel[T_FilterName]):
     handlers: list[T_AtomicHandlerName]
+    respect_handler_level: bool = True
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        from_attributes=True,
+        alias_generator=None,
+    )
 
 
 class StreamHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterName](AtomicHandlerSchema[T_FilterName, T_FormatterName]):
@@ -54,15 +60,6 @@ class StreamHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterNa
 
 
 class FileHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterName](AtomicHandlerSchema[T_FilterName, T_FormatterName]):
-    file_name: Path | None = Field(alias="filename", serialization_alias="filename", default=None)
-    max_bytes: int
-    backup_count: int
-
-
-class QueueHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]):
-    respect_handler_level: bool = True
-
-    @computed_field
-    @property
-    def _is_dictionary_configuration(self) -> Literal[True]:  # TODO: Tidy up queue handler
-        return True
+    file_name: Path = Field(serialization_alias="filename", default=DEFAULT_LOG_FILE_PATH)
+    max_bytes: int = DEFAULT_MAXIMUM_LOG_FILE_BYTES
+    backup_count: int = DEFAULT_LOG_FILE_BACKUPS

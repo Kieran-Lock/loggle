@@ -1,1 +1,1 @@
-from .handlers import Handlers
+from .handler_classes import HandlerClasses

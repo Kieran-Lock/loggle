@@ -1,1 +1,1 @@
-from .loggers import Loggers
+from .logger_names import UvicornLoggerName

@@ -4,7 +4,7 @@ from logging import Logger as DefaultLogger, getLogger as get_logger, _levelToNa
 from dataclasses import dataclass, field
 from typing import Self
 
-from ..lib.consts import LoggingLevel
+from ..log.lib.consts import LoggingLevel
 
 
 @dataclass(slots=True, init=False)

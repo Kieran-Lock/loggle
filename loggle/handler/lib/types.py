@@ -4,8 +4,7 @@ from pydantic_core import CoreSchema, core_schema
 from pydantic import GetCoreSchemaHandler
 
 from .consts import AtomicHandlerName, AtomicHandlerName, CompositeHandlerName, CompositeHandlerName
-from .schemas import HandlerModel, StreamHandlerSchema, FileHandlerSchema, QueueHandlerSchema
-from ...formatter.lib.consts import FormatterName
+from .schemas import HandlerModel
 
 
 type HandlerName = AtomicHandlerName | CompositeHandlerName

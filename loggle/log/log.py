@@ -7,7 +7,7 @@ from typing import Self
 
 from pydantic import field_serializer
 
-from ..lib.consts import LoggingLevel
+from .lib.consts import LoggingLevel
 from .lib.schemas import JSONLogModel, JSONLogProcessSchema, JSONLogThreadSchema
 
 
