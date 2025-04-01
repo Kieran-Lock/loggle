@@ -3,7 +3,11 @@ name = "loggle"
 version = "0.1.0"
 description = ""
 authors = ["Kieran Lock <kieran.lock@outlook.com>"]
+repository = "https://github.com/Kieran-Lock/loggle"
+homepage = "https://github.com/Kieran-Lock/loggle"
 readme = "README.md"
+license = "MIT"
+keywords = ["logging"]
 package-mode = true
 
 [tool.poetry.dependencies]
