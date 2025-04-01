@@ -1,4 +1,5 @@
 from logging.handlers import QueueHandler as DefaultQueueHandler, QueueListener
+from logging import LogRecord
 from atexit import register as at_exit_register
 from typing import ClassVar
 from multiprocessing import Queue
@@ -9,10 +10,10 @@ from dataclasses import dataclass
 class QueueHandler(DefaultQueueHandler):
     AUTOMATICALLY_SET_LISTENER: ClassVar[bool] = True
 
-    queue: Queue
+    queue: Queue[LogRecord | None]
     _listener: QueueListener | None
 
-    def __init__(self, queue: Queue) -> None:
+    def __init__(self, queue: Queue[LogRecord | None]) -> None:
         self.queue = queue
         self._listener = None
         super(QueueHandler, self).__init__(queue)
@@ -28,8 +29,9 @@ class QueueHandler(DefaultQueueHandler):
             self.start_listener()
     
     def start_listener(self) -> None:
-        self.listener.start()
-        at_exit_register(self.listener.stop)
+        if self.listener:
+            self.listener.start()
+            at_exit_register(self.listener.stop)
     
     def __hash__(self) -> int:
         return super(QueueHandler, self).__hash__()

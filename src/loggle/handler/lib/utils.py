@@ -1,4 +1,7 @@
-def import_qualified_name[T](name: str) -> T:
+from typing import Any
+
+
+def import_qualified_name(name: str) -> Any:
     parts = name.split(".")
     module = parts.pop(0)
     found = __import__(module)

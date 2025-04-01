@@ -145,7 +145,7 @@ from loggle import LoggingConfiguration, Logger
 
 
 LOGGING_CONFIGURATION = (
-    LoggingConfiguration[AppFilterName, AppFormatterName, AppAtomicHandlerName | AppCompositeHandlerName, AppLoggerName].create(
+    LoggingConfiguration[AppFilterName, AppFormatterName, AppAtomicHandlerName, AppCompositeHandlerName, AppLoggerName].create(
         filters=FILTERS,
         formatters=FORMATTERS,
         handlers=HANDLERS,

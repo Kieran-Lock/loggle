@@ -9,7 +9,7 @@ from ..log.lib.consts import LoggingLevel
 
 @dataclass(slots=True, init=False)
 class Logger:
-    name: str
+    name: str | None
     _logger: DefaultLogger = field(repr=False, compare=False)
 
     def __init__(self, *, name: str | None, level: LoggingLevel = LoggingLevel.INFO) -> None:
@@ -31,7 +31,6 @@ class Logger:
 
     def debug(self, message: object, **extra: object) -> Self:
         self._logger.debug(message, extra=extra)
-        self._logger.setLevel()
         return self
 
     def info(self, message: object, **extra: object) -> Self:

@@ -31,12 +31,12 @@ class Log(JSONLogModel):
     def from_record(cls, record: LogRecord, *, formatter: Formatter) -> Self:
         return cls(
             timestamp=datetime.fromtimestamp(record.created, tz=timezone.utc),
-            level=record.levelname,
+            level=LoggingLevel(record.levelname),
             message=record.getMessage(),
-            file_path=record.pathname,
+            file_path=Path(record.pathname).resolve(),
             line_number=record.lineno,
             exception=formatter.formatException(record.exc_info) if record.exc_info else None,
-            stack=formatter.formatStack(record.stack_info) if record.exc_info else None,
+            stack=formatter.formatStack(record.stack_info) if record.stack_info else None,
             process=JSONLogProcessSchema(name=record.processName, id=record.process),
             thread=JSONLogThreadSchema(name=record.threadName, id=record.thread),
             logger=record.name,
