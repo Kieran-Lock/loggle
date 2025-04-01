@@ -1,0 +1,26 @@
+from __future__ import annotations
+
+from logging import LogRecord, Formatter
+from pathlib import Path
+from datetime import datetime, timezone
+from typing import Self
+
+from pydantic import BaseModel, ConfigDict, field_serializer, Field
+from pydantic.alias_generators import to_camel
+
+from ...filter.lib.consts import FilterName
+from ...lib.consts import LoggingLevel
+from .formatter_factory import FormatterFactory
+
+
+class FormatterModel(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        from_attributes=True,
+    )
+
+
+class FormatterSchema[T: FilterName](FormatterModel):
+    format: str | None = None
+    datefmt: str | None = None
+    formatter_factory: FormatterFactory | None = Field(alias="()", serialization_alias="()", default=None)
