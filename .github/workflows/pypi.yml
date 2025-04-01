@@ -1,18 +1,18 @@
 name: PyPI Poetry Publish
 
 on:
-  release:
-    types: [ published ]
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
-  publish-loggle:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Publish to PyPI
-        uses: code-specialist/pypi-poetry-publish@v1
+      - uses: actions/checkout@v4.2
+      - name: Build and PyPI Publish
+        uses: JRubics/poetry-publish@v2.1
         with:
-          PACKAGE_DIRECTORY: "./src/"
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_REGISTRY_PASSWORD: ${{ secrets.PUBLISH_REGISTRY_PASSWORD }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          poetry_install_options: "--sync"
+          package_directory: "src"

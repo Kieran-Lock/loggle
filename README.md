@@ -5,9 +5,9 @@
 <!-- PROJECT SUMMARY -->
 <br />
 <div align="center">
-  <img src="https://i.imgur.com/LlNYjX4.gif" alt="Logo">
+  <img src="https://i.imgur.com/LlNYjX4.gif/" alt="Logo">
   <p align="center">
-    Type-safe, customizable logging configuration for Python.
+    Type-safe, customizable logging configuration for Python
     <br />
     <a href="https://github.com/Kieran-Lock/loggle/"><strong>Explore the docs »</strong></a>
     <br />
@@ -162,13 +162,13 @@ Finally, you can apply the configuration, and use loggers:
 ```python
 LOGGING_CONFIGURATION.set_configuration()
 
-LOGGER.debug("This is a debug message.")
-LOGGER.info("This is an informational message.")
-LOGGER.error("This is an error message.")
+APP_LOGGER.debug("This is a debug message.")
+APP_LOGGER.info("This is an informational message.")
+APP_LOGGER.error("This is an error message.")
 ```
 
-You can also get the underlying configuration dictionary passed into `logging.dictConfig`, which is useful in Uvicorn applications:
-```
+You can also get the underlying configuration dictionary that is passed into `logging.dictConfig`, which can be useful in Uvicorn applications:
+```python
 LOGGING_CONFIGURATION.to_configuration_dictionary()
 ```
 
