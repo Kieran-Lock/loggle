@@ -93,7 +93,7 @@ Now, you can define the actual implementations in your logging configuration:
 ```python
 from pathlib import Path
 
-from loggle import StreamHandlerSchema, LoggingLevel, LoggingStream, FileHandlerSchema, CompositeHandlerSchema, LoggersSchema
+from loggle import StreamHandlerSchema, LoggingLevel, LoggingStream, FileHandlerSchema, QueueHandlerSchema, LoggersSchema
 from loggle.collections import Filters, Formatters, HandlerClasses
 
 
@@ -125,7 +125,7 @@ HANDLERS = {
         formatter=AppFormatterName.JSON,
         level=LoggingLevel.DEBUG,
     ),
-    AppCompositeHandlerName.QUEUE: CompositeHandlerSchema(
+    AppCompositeHandlerName.QUEUE: QueueHandlerSchema(
         handler_class=HandlerClasses.QUEUE,
         handlers=list(AppAtomicHandlerName),
     ),
