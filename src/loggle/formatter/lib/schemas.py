@@ -10,7 +10,7 @@ from pydantic.alias_generators import to_camel
 
 from ...filter.lib.consts import FilterName
 from ...log.lib.consts import LoggingLevel
-from .formatter_factory import FormatterFactory
+from ...lib import Factory
 
 
 class FormatterModel(BaseModel):
@@ -20,7 +20,7 @@ class FormatterModel(BaseModel):
     )
 
 
-class FormatterSchema[T: FilterName](FormatterModel):
+class FormatterSchema(FormatterModel):
     format: str | None = None
     datefmt: str | None = None
-    formatter_factory: FormatterFactory | None = Field(serialization_alias="()", default=None)
+    formatter_factory: Factory[Formatter] | None = Field(serialization_alias="()", default=None)

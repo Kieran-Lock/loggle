@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal, Self, Any
+from typing import Literal, Self, Any, cast
 from logging.config import dictConfig as dict_config
 from pydantic import BaseModel
 
@@ -10,13 +10,13 @@ from ..handler import HandlersDict, AtomicHandlerSchema, CompositeHandlerSchema,
 from ..logger import LoggerName, LoggerSchema, LoggersSchema
 
 
-class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_HandlerName: AtomicHandlerName | CompositeHandlerName, T_LoggerName: LoggerName](BaseModel):
+class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_AtomicHandlerName: AtomicHandlerName, T_CompositeHandlerName: CompositeHandlerName, T_LoggerName: LoggerName](BaseModel):
     version: Literal[1]
     disable_existing_loggers: bool
     filters: dict[T_FilterName, FilterSchema]
     formatters: dict[T_FormatterName, FormatterSchema]
-    handlers: HandlersDict[T_HandlerName, AtomicHandlerSchema, CompositeHandlerSchema]
-    loggers: dict[T_LoggerName, LoggerSchema[T_HandlerName]]
+    handlers: HandlersDict[T_AtomicHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]]
+    loggers: dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]]
 
     def set_configuration(self) -> None:
         dict_config(self.to_configuration_dictionary())
@@ -30,8 +30,8 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
         *,
         filters: dict[T_FilterName, FilterSchema],
         formatters: dict[T_FormatterName, FormatterSchema],
-        handlers: HandlersDict[T_HandlerName, AtomicHandlerSchema, CompositeHandlerSchema],
-        loggers: LoggersSchema[T_LoggerName, T_HandlerName] | dict[T_LoggerName, LoggerSchema[T_HandlerName]],
+        handlers: HandlersDict[T_AtomicHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]],
+        loggers: LoggersSchema[T_LoggerName, T_AtomicHandlerName] | dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]],
     ) -> Self:
         return cls(
             version=1,
@@ -39,5 +39,5 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
             filters=filters,
             formatters=formatters,
             handlers=handlers,
-            loggers=loggers.to_loggers_dictionary() if isinstance(loggers, LoggersSchema) else loggers,
+            loggers=cast(dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]], loggers.to_loggers_dictionary()) if isinstance(loggers, LoggersSchema) else loggers,
         )

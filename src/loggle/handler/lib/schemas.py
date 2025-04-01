@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from logging import Formatter, Handler
+from logging import Handler
 
 from pydantic import ConfigDict, Field, field_serializer, field_validator, ValidationError, BaseModel
 from pydantic.alias_generators import to_camel
@@ -25,12 +25,15 @@ class HandlerModel[T: FilterName](BaseModel):
     @classmethod
     def resolve_handler_class(cls, value: object) -> type[Handler]:
         if value is None:
-            return Formatter
+            return Handler
         if isinstance(value, type) and issubclass(value, Handler):
             return value
         if not isinstance(value, str):
             raise ValidationError("Field 'class' must be given a string or None.")
-        return import_qualified_name(value)
+        handler_class = import_qualified_name(value)
+        if isinstance(handler_class, type) and issubclass(handler_class, Handler):
+            return handler_class
+        raise ValidationError(f"Could not resolve {value!r} to handler class.")
     
     model_config = ConfigDict(
         populate_by_name=True,
@@ -44,7 +47,7 @@ class AtomicHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterNa
     level: LoggingLevel
 
 
-class CompositeHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](HandlerModel[T_FilterName]):
+class CompositeHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FilterName](HandlerModel[T_FilterName]):
     handlers: list[T_AtomicHandlerName]
 
 
@@ -58,7 +61,7 @@ class FileHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterName
     backup_count: int = DEFAULT_LOG_FILE_BACKUPS
 
 
-class QueueHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]):
+class QueueHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FilterName](CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]):
     respect_handler_level: bool = True
 
     model_config = ConfigDict(

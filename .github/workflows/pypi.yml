@@ -3,7 +3,7 @@ name: PyPI Poetry Publish
 on:
   push:
     tags:
-      - "v*.*.*"
+      - v*.*.*
 
 jobs:
   build:
@@ -14,5 +14,5 @@ jobs:
         uses: JRubics/poetry-publish@v2.1
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
-          poetry_install_options: "--sync"
-          package_directory: "src"
+          poetry_install_options: --sync
+          package_directory: src

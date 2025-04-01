@@ -1,7 +1,7 @@
 from ..lib.schemas import FilterSchema
-from ..lib import FilterFactory
 from ..error_filter import ErrorFilter
+from ...lib import Factory
 
 
 class Filters:
-    ERROR = FilterSchema(filter_factory=FilterFactory(lambda: ErrorFilter()))
+    ERROR = FilterSchema(filter_factory=Factory(lambda: ErrorFilter()))
