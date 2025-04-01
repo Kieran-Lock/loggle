@@ -52,7 +52,7 @@ pip install loggle
 
 First, you must declare the names of the filters, formatters, handlers, and loggers your configuration contains:
 ```python
-from loggle import FilterName, FormatterName, AtomicHandlerName, CompositeHandlerName
+from loggle import FilterName, FormatterName, AtomicHandlerName, CompositeHandlerName, LoggerName
 from loggle.collections import UvicornLoggerName, SQLAlchemyLoggerName
 
 

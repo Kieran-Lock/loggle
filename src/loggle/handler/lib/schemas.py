@@ -46,13 +46,6 @@ class AtomicHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterNa
 
 class CompositeHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](HandlerModel[T_FilterName]):
     handlers: list[T_AtomicHandlerName]
-    respect_handler_level: bool = True
-
-    model_config = ConfigDict(
-        populate_by_name=True,
-        from_attributes=True,
-        alias_generator=None,
-    )
 
 
 class StreamHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterName](AtomicHandlerSchema[T_FilterName, T_FormatterName]):
@@ -63,3 +56,13 @@ class FileHandlerSchema[T_FilterName: FilterName, T_FormatterName: FormatterName
     file_name: Path = Field(serialization_alias="filename", default=DEFAULT_LOG_FILE_PATH)
     max_bytes: int = DEFAULT_MAXIMUM_LOG_FILE_BYTES
     backup_count: int = DEFAULT_LOG_FILE_BACKUPS
+
+
+class QueueHandlerSchema[T_AtomicHandlerName: AtomicHandlerName, T_FilterName: FormatterName](CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]):
+    respect_handler_level: bool = True
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        from_attributes=True,
+        alias_generator=None,
+    )

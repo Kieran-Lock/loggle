@@ -15,7 +15,7 @@ from .handler import (
     CompositeHandlerSchema,
     StreamHandlerSchema,
     FileHandlerSchema,
-    HandlerName,
+    QueueHandlerSchema,
     HandlersDict,
 )
 from .log import Log, JSONLogProcessSchema, JSONLogThreadSchema, LoggingLevel

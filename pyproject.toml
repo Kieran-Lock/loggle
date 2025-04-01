@@ -2,7 +2,9 @@
 name = "loggle"
 version = "0.1.0"
 description = "Type-safe, customizable logging configuration for Python"
-authors = ["Kieran Lock <kieran.lock@outlook.com>"]
+authors = [
+    { name = "Kieran Lock", email = "kieran.lock@outlook.com" }
+]
 keywords = ["logging", "type-safety", "uvicorn"]
 
 readme = "README.md"

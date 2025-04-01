@@ -7,10 +7,7 @@ from .consts import AtomicHandlerName, AtomicHandlerName, CompositeHandlerName, 
 from .schemas import HandlerModel
 
 
-type HandlerName = AtomicHandlerName | CompositeHandlerName
-
-
-class HandlersDict[K: HandlerName, V_AtomicHandler: HandlerModel, V_CompositeHandler: HandlerModel](dict[K, V_AtomicHandler | V_CompositeHandler]):
+class HandlersDict[K: AtomicHandlerName | CompositeHandlerName, V_AtomicHandler: HandlerModel, V_CompositeHandler: HandlerModel](dict[K, V_AtomicHandler | V_CompositeHandler]):
     @overload
     def __getitem__(self, key: AtomicHandlerName) -> V_AtomicHandler:
         ...

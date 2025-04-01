@@ -6,11 +6,11 @@ from pydantic import BaseModel
 
 from ..filter import FilterName, FilterSchema
 from ..formatter import FormatterSchema, FormatterName
-from ..handler import HandlerName, HandlersDict, AtomicHandlerSchema, CompositeHandlerSchema
+from ..handler import HandlersDict, AtomicHandlerSchema, CompositeHandlerSchema, AtomicHandlerName, CompositeHandlerName
 from ..logger import LoggerName, LoggerSchema, LoggersSchema
 
 
-class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_HandlerName: HandlerName, T_LoggerName: LoggerName](BaseModel):
+class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_HandlerName: AtomicHandlerName | CompositeHandlerName, T_LoggerName: LoggerName](BaseModel):
     version: Literal[1]
     disable_existing_loggers: bool
     filters: dict[T_FilterName, FilterSchema]
