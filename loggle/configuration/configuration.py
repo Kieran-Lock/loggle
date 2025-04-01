@@ -19,7 +19,7 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
     loggers: dict[T_LoggerName, LoggerSchema[T_HandlerName]]
 
     def set_configuration(self) -> None:
-        dict_config(self.to_configuration_dictionary())  # TODO: Investigate how this works!
+        dict_config(self.to_configuration_dictionary())
     
     def to_configuration_dictionary(self) -> dict[str, Any]:
         return self.model_dump(exclude_none=True, by_alias=True)

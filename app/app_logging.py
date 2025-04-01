@@ -48,7 +48,7 @@ LOGGING_CONFIGURATION = (
             AppAtomicHandlerName.ERROR: StreamHandlerSchema(
                 handler_class=HandlerClasses.STREAM,
                 formatter=AppFormatterName.STANDARD,
-                level=LoggingLevel.DEBUG,
+                level=LoggingLevel.ERROR,
                 stream=LoggingStream.STANDARD_ERROR,
             ),
             AppAtomicHandlerName.JSON_FILE: FileHandlerSchema(
