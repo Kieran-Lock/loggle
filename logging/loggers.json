@@ -3,12 +3,12 @@
         "my-library": {
             "handlers": ["queue"],
             "level": "INFO",
-            "propagate": false
+            "propagate": true
         },
         "my-application": {
             "handlers": ["queue"],
             "level": "INFO",
-            "propagate": false
+            "propagate": true
         }
     }
 }
