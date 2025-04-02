@@ -23,7 +23,7 @@ from .logger import Logger, LoggerName, LoggerSchema, LoggersSchema
 from .lib import Factory
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = [
     "LoggingConfiguration",
     "ErrorFilter",
