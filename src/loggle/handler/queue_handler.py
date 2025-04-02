@@ -2,7 +2,7 @@ from logging.handlers import QueueHandler as DefaultQueueHandler, QueueListener
 from logging import LogRecord
 from atexit import register as at_exit_register
 from typing import ClassVar
-from multiprocessing import Queue
+from multiprocessing.queues import Queue as TQueue
 from dataclasses import dataclass
 
 
@@ -10,10 +10,10 @@ from dataclasses import dataclass
 class QueueHandler(DefaultQueueHandler):
     AUTOMATICALLY_SET_LISTENER: ClassVar[bool] = True
 
-    queue: Queue[LogRecord | None]
+    queue: TQueue[LogRecord | None]
     _listener: QueueListener | None
 
-    def __init__(self, queue: Queue[LogRecord | None]) -> None:
+    def __init__(self, queue: TQueue[LogRecord | None]) -> None:
         self.queue = queue
         self._listener = None
         super(QueueHandler, self).__init__(queue)
