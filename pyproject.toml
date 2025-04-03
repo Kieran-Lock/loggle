@@ -1,6 +1,6 @@
 [project]
 name = "loggle"
-version = "0.1.1"
+version = "0.1.2"
 description = "Type-safe, customizable logging configuration for Python"
 authors = [
     { name = "Kieran Lock", email = "kieran.lock@outlook.com" }

@@ -15,8 +15,8 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
     disable_existing_loggers: bool
     filters: dict[T_FilterName, FilterSchema]
     formatters: dict[T_FormatterName, FormatterSchema]
-    handlers: HandlersDict[T_AtomicHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]]
-    loggers: dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]]
+    handlers: HandlersDict[T_AtomicHandlerName | T_CompositeHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]]
+    loggers: dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName | T_CompositeHandlerName]]
 
     def set_configuration(self) -> None:
         dict_config(self.to_configuration_dictionary())
@@ -30,8 +30,8 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
         *,
         filters: dict[T_FilterName, FilterSchema],
         formatters: dict[T_FormatterName, FormatterSchema],
-        handlers: HandlersDict[T_AtomicHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]],
-        loggers: LoggersSchema[T_LoggerName, T_AtomicHandlerName] | dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]],
+        handlers: HandlersDict[T_AtomicHandlerName | T_CompositeHandlerName, AtomicHandlerSchema[T_FilterName, T_FormatterName], CompositeHandlerSchema[T_AtomicHandlerName, T_FilterName]],
+        loggers: LoggersSchema[T_LoggerName, T_AtomicHandlerName | T_CompositeHandlerName] | dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName | T_CompositeHandlerName]],
     ) -> Self:
         return cls(
             version=1,
@@ -39,5 +39,5 @@ class Configuration[T_FilterName: FilterName, T_FormatterName: FormatterName, T_
             filters=filters,
             formatters=formatters,
             handlers=handlers,
-            loggers=cast(dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName]], loggers.to_loggers_dictionary()) if isinstance(loggers, LoggersSchema) else loggers,
+            loggers=cast(dict[T_LoggerName, LoggerSchema[T_AtomicHandlerName | T_CompositeHandlerName]], loggers.to_loggers_dictionary()) if isinstance(loggers, LoggersSchema) else loggers,
         )
